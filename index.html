@@ -3,34 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>SpaceID Mini App</title>
+  <title>SpaceID Protocol</title>
   
   <!-- Telegram WebApp SDK -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   
-  <!-- LEVEL 1: Telegram Only Gatekeeper -->
+  <!-- Strict Gatekeeper -->
   <script>
     (function () {
       const tg = window.Telegram?.WebApp;
       const isTelegram = tg && tg.initData && tg.initData.length > 0;
       
-      // Agar direct browser me khula ho toh block karo
       if (!isTelegram) {
         document.addEventListener("DOMContentLoaded", () => {
           document.body.innerHTML = `
-            <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:#06080e;color:#fff;font-family:system-ui,-apple-system,sans-serif;text-align:center;padding:24px;box-sizing:border-box;">
-              <div style="font-size:56px;margin-bottom:16px;">🚀</div>
-              <h2 style="color:#f43f5e;margin:0 0 10px 0;font-size:22px;font-weight:700;">Access Denied</h2>
-              <p style="color:#94a3b8;font-size:14px;max-width:320px;line-height:1.6;margin:0 0 20px 0;">
-                Yeh application sirf official <b>Telegram Mini App</b> ke andar accessible hai. Direct browser access protected hai.
+            <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:#05070d;color:#fff;font-family:-apple-system,BlinkMacSystemFont,sans-serif;text-align:center;padding:24px;box-sizing:border-box;">
+              <div style="font-size:60px;margin-bottom:16px;">🛡️</div>
+              <h2 style="color:#f43f5e;font-size:22px;margin-bottom:8px;font-weight:700;">Telegram Required</h2>
+              <p style="color:#94a3b8;font-size:14px;max-width:320px;line-height:1.6;margin-bottom:20px;">
+                Yeh protocol sirf verified <b>Telegram Mini App</b> environment ke andar run hota hai. External browsers block kiye gaye hain.
               </p>
-              <span style="font-size:12px;color:#64748b;background:#0f172a;padding:8px 16px;border-radius:20px;border:1px solid #1e293b;">
-                Error: 403_TELEGRAM_INIT_DATA_MISSING
-              </span>
+              <div style="font-family:monospace;font-size:11px;color:#64748b;background:#0c101b;padding:8px 16px;border-radius:20px;border:1px solid #1e293b;">
+                ERR_SECURITY_RESTRICTED_ACCESS
+              </div>
             </div>
           `;
         });
-        throw new Error("Direct browser access prevented by SpaceID Gatekeeper.");
+        throw new Error("Direct browser access prevented.");
       }
       
       tg.ready();
@@ -47,11 +46,11 @@
       user-select: none;
       -webkit-user-select: none;
       -webkit-tap-highlight-color: transparent;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
 
     body {
-      background: radial-gradient(circle at top, #111827 0%, #030712 100%);
+      background: radial-gradient(circle at top, #0f172a 0%, #030712 100%);
       color: #f8fafc;
       height: 100vh;
       overflow: hidden;
@@ -59,14 +58,14 @@
       flex-direction: column;
     }
 
-    /* Header */
+    /* Top Bar */
     .header {
-      padding: 16px 20px;
+      padding: 14px 18px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: rgba(15, 23, 42, 0.6);
-      backdrop-filter: blur(12px);
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(14px);
       border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }
 
@@ -77,38 +76,48 @@
     }
 
     .user-avatar {
-      width: 40px;
-      height: 40px;
+      width: 42px;
+      height: 42px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #6366f1, #a855f7);
+      background: linear-gradient(135deg, #38bdf8, #6366f1);
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 700;
-      font-size: 16px;
-      border: 2px solid #38bdf8;
+      font-size: 17px;
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.3);
     }
 
     .user-meta h4 {
       font-size: 15px;
-      font-weight: 600;
+      font-weight: 700;
       color: #f1f5f9;
     }
 
     .user-meta span {
-      font-size: 12px;
+      font-size: 11px;
       color: #38bdf8;
       background: rgba(56, 189, 248, 0.1);
       padding: 2px 8px;
       border-radius: 12px;
-      border: 1px solid rgba(56, 189, 248, 0.2);
+      font-weight: 600;
     }
 
-    /* Content Area */
+    .network-badge {
+      font-size: 12px;
+      color: #10b981;
+      font-weight: 600;
+      background: rgba(16, 185, 129, 0.1);
+      padding: 5px 10px;
+      border-radius: 14px;
+      border: 1px solid rgba(16, 185, 129, 0.25);
+    }
+
+    /* Container Views */
     .tab-content {
       flex: 1;
       overflow-y: auto;
-      padding: 20px;
+      padding: 18px;
       display: none;
     }
 
@@ -118,37 +127,36 @@
       align-items: center;
     }
 
-    /* Tap Screen */
+    /* Tap Section */
     .balance-box {
       text-align: center;
-      margin: 15px 0 30px;
+      margin: 12px 0 25px;
     }
 
     .balance-label {
-      font-size: 13px;
+      font-size: 12px;
       color: #94a3b8;
       letter-spacing: 1.5px;
-      text-transform: uppercase;
+      font-weight: 600;
     }
 
     .balance-amount {
       font-size: 42px;
       font-weight: 800;
-      letter-spacing: -0.5px;
       background: linear-gradient(135deg, #38bdf8, #818cf8, #c084fc);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 10px;
       margin-top: 4px;
     }
 
     .tap-area {
       position: relative;
-      width: 250px;
-      height: 250px;
+      width: 240px;
+      height: 240px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -157,33 +165,31 @@
     }
 
     .tap-button {
-      width: 220px;
-      height: 220px;
+      width: 210px;
+      height: 210px;
       border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, #38bdf8 0%, #1d4ed8 50%, #0f172a 100%);
-      box-shadow: 0 0 50px rgba(56, 189, 248, 0.35), inset 0 0 20px rgba(255, 255, 255, 0.4);
+      background: radial-gradient(circle at 35% 35%, #0284c7 0%, #1e1b4b 75%, #030712 100%);
+      box-shadow: 0 0 60px rgba(56, 189, 248, 0.3), inset 0 0 25px rgba(255, 255, 255, 0.35);
       display: flex;
       align-items: center;
       justify-content: center;
       transition: transform 0.08s ease;
-      position: relative;
-      border: 4px solid rgba(56, 189, 248, 0.4);
+      border: 3px solid rgba(56, 189, 248, 0.5);
     }
 
     .tap-button:active {
-      transform: scale(0.94);
+      transform: scale(0.93);
     }
 
     .tap-icon {
-      font-size: 80px;
-      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5));
+      font-size: 84px;
+      filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.6));
     }
 
-    /* Floating Score Popups */
     .float-text {
       position: absolute;
       color: #38bdf8;
-      font-size: 24px;
+      font-size: 26px;
       font-weight: 800;
       pointer-events: none;
       animation: floatUp 0.8s ease-out forwards;
@@ -191,7 +197,7 @@
 
     @keyframes floatUp {
       0% { opacity: 1; transform: translateY(0); }
-      100% { opacity: 0; transform: translateY(-70px); }
+      100% { opacity: 0; transform: translateY(-75px); }
     }
 
     /* Energy Bar */
@@ -199,7 +205,7 @@
       width: 100%;
       max-width: 320px;
       margin-top: auto;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .energy-header {
@@ -208,6 +214,7 @@
       font-size: 13px;
       color: #94a3b8;
       margin-bottom: 6px;
+      font-weight: 600;
     }
 
     .energy-bar-bg {
@@ -226,7 +233,7 @@
       transition: width 0.2s ease;
     }
 
-    /* Tasks / Ref / Withdraw Cards */
+    /* Task & Box Cards */
     .card-list {
       width: 100%;
       display: flex;
@@ -236,8 +243,8 @@
     }
 
     .task-card {
-      background: rgba(30, 41, 59, 0.4);
-      border: 1px solid rgba(255, 255, 255, 0.06);
+      background: rgba(30, 41, 59, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       padding: 14px 16px;
       border-radius: 14px;
       display: flex;
@@ -248,13 +255,13 @@
     .task-title {
       font-size: 14px;
       font-weight: 600;
-      color: #f1f5f9;
     }
 
     .task-reward {
       font-size: 12px;
       color: #38bdf8;
       margin-top: 2px;
+      font-weight: 700;
     }
 
     .btn-action {
@@ -274,31 +281,35 @@
       cursor: not-allowed;
     }
 
-    /* Withdraw Box */
-    .withdraw-container {
+    /* Withdraw Form */
+    .withdraw-box {
       width: 100%;
       background: rgba(30, 41, 59, 0.4);
-      border: 1px solid rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 16px;
       padding: 20px;
-      margin-top: 15px;
+      margin-top: 12px;
     }
 
     .form-group {
       margin-bottom: 16px;
+      text-align: left;
+      width: 100%;
     }
 
     .form-group label {
       display: block;
-      font-size: 13px;
+      font-size: 12px;
       color: #94a3b8;
       margin-bottom: 6px;
+      font-weight: 600;
+      text-transform: uppercase;
     }
 
     .form-group input, .form-group select {
       width: 100%;
-      background: rgba(15, 23, 42, 0.8);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.12);
       padding: 12px 14px;
       border-radius: 10px;
       color: #fff;
@@ -323,14 +334,14 @@
       box-shadow: 0 4px 16px rgba(56, 189, 248, 0.3);
     }
 
-    /* Meteora Style Gas Fee Modal */
+    /* Meteora Modal */
     .modal-overlay {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.8);
+      background: rgba(0, 0, 0, 0.85);
       backdrop-filter: blur(8px);
       display: none;
       align-items: center;
@@ -340,46 +351,40 @@
     }
 
     .modal-card {
-      background: #0f172a;
+      background: #0b1120;
       border: 1px solid #1e293b;
       border-radius: 20px;
       padding: 24px;
       width: 100%;
-      max-width: 340px;
+      max-width: 350px;
       text-align: center;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
-    }
-
-    .modal-icon {
-      font-size: 48px;
-      margin-bottom: 12px;
-    }
-
-    .modal-title {
-      font-size: 18px;
-      font-weight: 700;
-      color: #f8fafc;
-      margin-bottom: 8px;
-    }
-
-    .modal-desc {
-      font-size: 13px;
-      color: #94a3b8;
-      line-height: 1.5;
-      margin-bottom: 16px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
     }
 
     .fee-badge {
-      background: rgba(245, 158, 11, 0.1);
+      background: rgba(245, 158, 11, 0.12);
       border: 1px solid rgba(245, 158, 11, 0.3);
       color: #fbbf24;
       padding: 10px 14px;
       border-radius: 10px;
       font-size: 13px;
-      font-weight: 600;
-      margin-bottom: 18px;
+      font-weight: 700;
+      margin: 14px 0;
       display: flex;
       justify-content: space-between;
+    }
+
+    .deposit-address-box {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px dashed rgba(255, 255, 255, 0.2);
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 11px;
+      color: #e2e8f0;
+      font-family: monospace;
+      word-break: break-all;
+      margin-bottom: 12px;
+      cursor: pointer;
     }
 
     .modal-btns {
@@ -399,7 +404,7 @@
     }
 
     .btn-primary {
-      flex: 1;
+      flex: 1.3;
       background: linear-gradient(135deg, #f59e0b, #ef4444);
       color: #fff;
       border: none;
@@ -409,23 +414,44 @@
       cursor: pointer;
     }
 
-    /* Bottom Navigation Bar */
+    /* Verification Status Screen inside Modal */
+    .verify-box {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px 0;
+    }
+
+    .spinner {
+      width: 36px;
+      height: 36px;
+      border: 3px solid rgba(56, 189, 248, 0.2);
+      border-top-color: #38bdf8;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-bottom: 14px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Bottom Navigation */
     .nav-bar {
-      height: 68px;
-      background: rgba(15, 23, 42, 0.9);
+      height: 66px;
+      background: rgba(15, 23, 42, 0.95);
       backdrop-filter: blur(16px);
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
       display: flex;
       justify-content: space-around;
       align-items: center;
-      padding: 0 10px;
     }
 
     .nav-item {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 4px;
+      gap: 3px;
       color: #64748b;
       cursor: pointer;
       font-size: 11px;
@@ -450,17 +476,15 @@
       <div class="user-avatar" id="avatar">S</div>
       <div class="user-meta">
         <h4 id="username">Commander</h4>
-        <span>LVL 1 Novice</span>
+        <span>Tier 1 Pioneer</span>
       </div>
     </div>
-    <div>
-      <span style="font-size: 12px; color: #10b981; font-weight: 600; background: rgba(16, 185, 129, 0.1); padding: 4px 10px; border-radius: 12px; border: 1px solid rgba(16, 185, 129, 0.2);">
-        ● Mainnet Sync
-      </span>
+    <div class="network-badge">
+      ● TON Mainnet
     </div>
   </header>
 
-  <!-- TAB 1: TAP SCREEN -->
+  <!-- TAB 1: TAP -->
   <section id="tab-tap" class="tab-content active">
     <div class="balance-box">
       <div class="balance-label">SPACE BALANCE</div>
@@ -487,67 +511,66 @@
     </div>
   </section>
 
-  <!-- TAB 2: TASKS -->
+  <!-- TAB 2: MISSIONS -->
   <section id="tab-tasks" class="tab-content">
-    <h3 style="margin-top: 10px; margin-bottom: 6px; font-size: 18px;">Protocol Missions</h3>
-    <p style="font-size: 13px; color: #94a3b8; margin-bottom: 16px;">Missions complete karke extra tokens claim karo</p>
+    <h3 style="margin-top: 6px; margin-bottom: 4px; font-size: 18px;">Protocol Tasks</h3>
+    <p style="font-size: 13px; color: #94a3b8; margin-bottom: 14px;">Missions complete karke extra SPACE claim karein</p>
     
     <div class="card-list">
       <div class="task-card">
         <div>
-          <div class="task-title">Join Announcement Channel</div>
-          <div class="task-reward">+2,500 SPACE</div>
+          <div class="task-title">Join Official Channel</div>
+          <div class="task-reward">+5,000 SPACE</div>
         </div>
-        <button class="btn-action" onclick="claimTask(this, 2500)">Claim</button>
+        <button class="btn-action" onclick="claimTask(this, 5000)">Claim</button>
       </div>
       <div class="task-card">
         <div>
           <div class="task-title">Follow on X (Twitter)</div>
-          <div class="task-reward">+3,000 SPACE</div>
+          <div class="task-reward">+3,500 SPACE</div>
         </div>
-        <button class="btn-action" onclick="claimTask(this, 3000)">Claim</button>
+        <button class="btn-action" onclick="claimTask(this, 3500)">Claim</button>
       </div>
       <div class="task-card">
         <div>
           <div class="task-title">Daily Cosmic Check-in</div>
-          <div class="task-reward">+1,000 SPACE</div>
+          <div class="task-reward">+2,000 SPACE</div>
         </div>
-        <button class="btn-action" onclick="claimTask(this, 1000)">Claim</button>
+        <button class="btn-action" onclick="claimTask(this, 2000)">Claim</button>
       </div>
     </div>
   </section>
 
   <!-- TAB 3: FRIENDS / REF -->
   <section id="tab-friends" class="tab-content">
-    <h3 style="margin-top: 10px; margin-bottom: 6px; font-size: 18px;">Fleet Alliance</h3>
-    <p style="font-size: 13px; color: #94a3b8; margin-bottom: 16px;">Dosto ko invite karo aur unka 10% bonus pao</p>
+    <h3 style="margin-top: 6px; margin-bottom: 4px; font-size: 18px;">Fleet Alliance</h3>
+    <p style="font-size: 13px; color: #94a3b8; margin-bottom: 14px;">Dosto ko invite karke direct bonus hasil karein</p>
 
-    <div class="withdraw-container" style="text-align: center;">
-      <div style="font-size: 32px; margin-bottom: 8px;">🤝</div>
-      <div style="font-size: 14px; font-weight: 600; margin-bottom: 4px;">Aapka Referral Link</div>
-      <input type="text" id="refLink" readonly value="https://t.me/your_bot?start=ref_commander" style="text-align: center; margin-bottom: 12px; background: rgba(0,0,0,0.4); border: 1px dashed rgba(255,255,255,0.2);">
-      <button class="btn-submit" onclick="copyRef()">Share Referral Link</button>
+    <div class="withdraw-box" style="text-align: center;">
+      <div style="font-size: 36px; margin-bottom: 8px;">🤝</div>
+      <div style="font-size: 14px; font-weight: 600; margin-bottom: 6px;">Aapka Personal Invite Link</div>
+      <input type="text" id="refLink" readonly value="https://t.me/your_bot?start=ref_pilot" style="text-align: center; margin-bottom: 12px; background: rgba(0,0,0,0.5); border: 1px dashed rgba(255,255,255,0.2);">
+      <button class="btn-submit" onclick="copyRef()">Copy Referral Link</button>
     </div>
   </section>
 
-  <!-- TAB 4: WITHDRAW (METEORA GAS FEE JUGAD) -->
+  <!-- TAB 4: WITHDRAW -->
   <section id="tab-withdraw" class="tab-content">
-    <h3 style="margin-top: 10px; margin-bottom: 6px; font-size: 18px;">Token Withdrawal</h3>
-    <p style="font-size: 13px; color: #94a3b8; margin-bottom: 16px;">Apne airdrop tokens wallet me transfer karein</p>
+    <h3 style="margin-top: 6px; margin-bottom: 4px; font-size: 18px;">Token Cashout</h3>
+    <p style="font-size: 13px; color: #94a3b8; margin-bottom: 14px;">Apne airdrop tokens wallet me transfer karein</p>
 
-    <div class="withdraw-container">
+    <div class="withdraw-box">
       <div class="form-group">
         <label>Network</label>
         <select id="withdrawNet">
-          <option value="TON">The Open Network (TON Mainnet)</option>
-          <option value="SOL">Solana (SOL)</option>
-          <option value="BSC">BNB Smart Chain (BEP20)</option>
+          <option value="TON">TON (The Open Network - Official)</option>
+          <option value="SOL">Solana Mainnet (SOL)</option>
         </select>
       </div>
 
       <div class="form-group">
-        <label>Receiving Wallet Address</label>
-        <input type="text" id="walletAddr" placeholder="Paste your wallet address...">
+        <label>Wallet Address</label>
+        <input type="text" id="walletAddr" placeholder="Paste your non-custodial wallet...">
       </div>
 
       <div class="form-group">
@@ -555,36 +578,59 @@
         <input type="number" id="withdrawAmt" placeholder="Minimum: 10,000 SPACE">
       </div>
 
-      <button class="btn-submit" onclick="initiateWithdrawal()">Withdraw Tokens</button>
+      <button class="btn-submit" onclick="startWithdrawal()">Proceed to Withdraw</button>
     </div>
   </section>
 
   <!-- METEORA GAS FEE MODAL POPUP -->
   <div class="modal-overlay" id="feeModal">
-    <div class="modal-card">
-      <div class="modal-icon">⚠️</div>
-      <div class="modal-title">Network Gas Fee Required</div>
-      <div class="modal-desc">
-        Anti-bot security verification aur blockchain gas network fee verification zaroori hai withdrawal queue me add karne ke liye.
+    <div class="modal-card" id="feeContent">
+      <div style="font-size: 44px; margin-bottom: 8px;">⚠️</div>
+      <div style="font-size: 18px; font-weight: 700; color: #f8fafc; margin-bottom: 6px;">
+        Network Gas Verification
+      </div>
+      <div style="font-size: 13px; color: #94a3b8; line-height: 1.5; margin-bottom: 12px;">
+        Smart contract queue verification aur anti-sybil fee deposit required hai withdrawal release ke liye.
       </div>
       
       <div class="fee-badge">
-        <span>Required Gas Deposit:</span>
-        <span>0.50 TON (~$2.80)</span>
+        <span>Gas Deposit Required:</span>
+        <span>0.50 TON (~$2.85)</span>
       </div>
 
-      <p style="font-size: 12px; color: #ef4444; line-height: 1.4; margin-bottom: 16px;">
-        * Notice: Bina gas fee verification ke transaction smart contract queue me reject ho jayega.
-      </p>
+      <div style="text-align: left; margin-bottom: 6px; font-size: 11px; color: #94a3b8;">
+        Official Smart Contract Deposit Address (Tap to copy):
+      </div>
+      <div class="deposit-address-box" onclick="copyDepositAddress()">
+        UQDY7L9Q_xN98Z1kK8LqXWv3s8z2Jk6P009mN81qLsTONFee
+      </div>
+
+      <div style="font-size: 11px; color: #ef4444; line-height: 1.4; margin-bottom: 16px;">
+        * Notice: Gas fee submit hone ke baad auto-release smart contract queue 2 minute me verify karega.
+      </div>
 
       <div class="modal-btns">
         <button class="btn-secondary" onclick="closeFeeModal()">Cancel</button>
-        <button class="btn-primary" onclick="proceedFeePayment()">Pay Gas Fee</button>
+        <button class="btn-primary" onclick="confirmPaymentAction()">Deposit & Verify</button>
+      </div>
+    </div>
+
+    <!-- Live Checking Animation Drama -->
+    <div class="modal-card verify-box" id="verifyContent">
+      <div class="spinner"></div>
+      <div style="font-size: 16px; font-weight: 700; color: #f8fafc; margin-bottom: 6px;">
+        Scanning TON Blockchain...
+      </div>
+      <div style="font-size: 13px; color: #94a3b8; margin-bottom: 12px;" id="verifyStep">
+        Waiting for incoming 0.50 TON deposit tx...
+      </div>
+      <div style="font-family: monospace; font-size: 12px; color: #38bdf8;" id="timer">
+        Time Remaining: 04:59
       </div>
     </div>
   </div>
 
-  <!-- Bottom Navigation -->
+  <!-- Bottom Navigation Bar -->
   <nav class="nav-bar">
     <div class="nav-item active" onclick="switchTab('tab-tap', this)">
       <div class="nav-icon">🪐</div>
@@ -604,7 +650,6 @@
     </div>
   </nav>
 
-  <!-- Client Logic -->
   <script>
     // State
     let balance = parseInt(localStorage.getItem('space_bal') || '0', 10);
@@ -617,6 +662,8 @@
     const energyFill = document.getElementById('energyFill');
     const tapArea = document.getElementById('tapArea');
     const feeModal = document.getElementById('feeModal');
+    const feeContent = document.getElementById('feeContent');
+    const verifyContent = document.getElementById('verifyContent');
 
     // Init Telegram User Data
     const tg = window.Telegram?.WebApp;
@@ -636,7 +683,7 @@
     }
     updateUI();
 
-    // Tap Click Handler
+    // Tap Handling
     tapArea.addEventListener('click', (e) => {
       if (energy <= 0) {
         if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('warning');
@@ -647,9 +694,8 @@
       energy -= 1;
       updateUI();
 
-      if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
+      if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
 
-      // Floating +1 animation
       const rect = tapArea.getBoundingClientRect();
       const floatEl = document.createElement('div');
       floatEl.className = 'float-text';
@@ -665,7 +711,7 @@
       setTimeout(() => floatEl.remove(), 800);
     });
 
-    // Energy Regeneration (1 energy per second)
+    // Energy Regen
     setInterval(() => {
       if (energy < maxEnergy) {
         energy += 1;
@@ -673,7 +719,7 @@
       }
     }, 1000);
 
-    // Tab Switcher
+    // Tab Switch
     function switchTab(tabId, el) {
       document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
       document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -694,12 +740,20 @@
     function copyRef() {
       const copyText = document.getElementById("refLink");
       navigator.clipboard.writeText(copyText.value);
-      alert("Referral link copied to clipboard!");
+      alert("Referral link copied!");
       if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
     }
 
-    // Meteora Style Withdrawal Flow
-    function initiateWithdrawal() {
+    // Copy Contract Address
+    function copyDepositAddress() {
+      const addr = "UQDY7L9Q_xN98Z1kK8LqXWv3s8z2Jk6P009mN81qLsTONFee";
+      navigator.clipboard.writeText(addr);
+      alert("Contract Deposit Address Copied!");
+      if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+    }
+
+    // Withdraw Trigger
+    function startWithdrawal() {
       const addr = document.getElementById('walletAddr').value.trim();
       const amt = parseInt(document.getElementById('withdrawAmt').value, 10);
 
@@ -714,11 +768,13 @@
       }
 
       if (amt > balance) {
-        alert("Insufficient balance in your account!");
+        alert("Account balance insufficient hai!");
         return;
       }
 
-      // Open Meteora Gas Fee Warning Modal
+      // Show Meteora Modal
+      feeContent.style.display = 'block';
+      verifyContent.style.display = 'none';
       feeModal.style.display = 'flex';
       if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('warning');
     }
@@ -727,10 +783,30 @@
       feeModal.style.display = 'none';
     }
 
-    function proceedFeePayment() {
-      // Meteora style popup trigger
-      alert("Connecting TON Connect Wallet to pay 0.50 TON Gas Fee...\n(Address: EQD_gas_validator_smart_contract)");
-      closeFeeModal();
+    // Meteora Verification Simulation
+    function confirmPaymentAction() {
+      feeContent.style.display = 'none';
+      verifyContent.style.display = 'flex';
+
+      let timeLeft = 300;
+      const timerEl = document.getElementById('timer');
+      const stepEl = document.getElementById('verifyStep');
+
+      const interval = setInterval(() => {
+        timeLeft--;
+        let mins = Math.floor(timeLeft / 60);
+        let secs = timeLeft % 60;
+        timerEl.innerText = `Time Remaining: ${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`;
+
+        if (timeLeft === 295) stepEl.innerText = "Found pending transaction hash... waiting for block inclusions.";
+        if (timeLeft === 285) stepEl.innerText = "Confirmations: (0/12) - Processing gas execution...";
+
+        if (timeLeft <= 0) {
+          clearInterval(interval);
+          alert("Timeout: No deposit detected. Please try again.");
+          closeFeeModal();
+        }
+      }, 1000);
     }
   </script>
 </body>
